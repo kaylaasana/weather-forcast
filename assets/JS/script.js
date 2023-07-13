@@ -1,12 +1,8 @@
-// request URLs
-var currentWeather = `https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}`;
-var geoCode = `http://api.openweathermap.org/geo/1.0/direct?q={city name}&limit={limit}&appid={API key}`;   
-// store API keys
-var apiKey = '6f32794f43e74f5523608b6bb0478735';
 // element selectors
 var searchBtn = document.getElementById('search-button');
-var cityName = document.getElementById('search-input').value;
-
+// request URLs
+var currentWeather = `https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=6f32794f43e74f5523608b6bb0478735`;
+  
 
 // functions
     // recent searches - check localStorage
@@ -17,15 +13,32 @@ var cityName = document.getElementById('search-input').value;
         // update/call recent searches function
         // 
 
-function searchValue(cityName){     
+function searchGeo(cityName){     
         // call function that saves recent searches
+        var cityName = document.getElementById('search-input').value;
+        var geoCode = "https://api.openweathermap.org/geo/1.0/direct?q={" + cityName + "}&appid=6f32794f43e74f5523608b6bb0478735";
+
+        fetch(geoCode)
+            .then(function(response){
+                return response.json();                
+            })
+            .then(function(data){
+            console.log(data);
+            var lat = data[0].lat;
+            var lon = data[0].lon;
+            console.log(lat);
+            console.log(lon);
+            coords(lat,lon);
+        })
 }
-    // function coords(variable) {
-        // fetch request for coords with API
-        // .then - convert to JSON format
-        // .then - receive and extract coord data
-        // call weather function
-    // }
+// function coords(lat, lon) {
+// // //         // fetch request for coords with API
+// // //         // .then - convert to JSON format
+// // //         // .then - receive and extract coord data
+// // //         var long;
+// // //         var lat;
+// // //         // call weather function
+// }
     // function weather(coords) {
         // use coords from first fetch to fetch weather data from API
         // convert to JSON format
@@ -37,10 +50,9 @@ function searchValue(cityName){
 // }
     
 
-// searchBtn.addEventListener("click", function(){
-// // variable for search input
-// // call function - search(variable)
-// });
+searchBtn.addEventListener("click", function(){
+    searchGeo();
+});
 
 // event.target.addEventListener("click", function(event){
 // // console.log(event.target)
