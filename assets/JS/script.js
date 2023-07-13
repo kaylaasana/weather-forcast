@@ -1,7 +1,7 @@
 // element selectors
 var searchBtn = document.getElementById('search-button');
 // request URLs
-var currentWeather = `https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid=6f32794f43e74f5523608b6bb0478735`;
+
   
 
 // functions
@@ -13,10 +13,10 @@ var currentWeather = `https://api.openweathermap.org/data/2.5/weather?lat={lat}&
         // update/call recent searches function
         // 
 
-function searchGeo(cityName){     
+function searchCurrent(cityName){     
         // call function that saves recent searches
         var cityName = document.getElementById('search-input').value;
-        var geoCode = "https://api.openweathermap.org/geo/1.0/direct?q={" + cityName + "}&appid=6f32794f43e74f5523608b6bb0478735";
+        var geoCode = "https://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&appid=6f32794f43e74f5523608b6bb0478735";
 
         fetch(geoCode)
             .then(function(response){
@@ -28,8 +28,15 @@ function searchGeo(cityName){
             var lon = data[0].lon;
             console.log(lat);
             console.log(lon);
-            coords(lat,lon);
-        })
+            var currentWeather = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=6f32794f43e74f5523608b6bb0478735";
+            return fetch(currentWeather);
+            })
+            .then(function(response){
+                return response.json();
+            })
+            .then(function(data){
+                console.log(data)
+            });
 }
 // function coords(lat, lon) {
 // // //         // fetch request for coords with API
@@ -51,7 +58,7 @@ function searchGeo(cityName){
     
 
 searchBtn.addEventListener("click", function(){
-    searchGeo();
+    searchCurrent();
 });
 
 // event.target.addEventListener("click", function(event){
