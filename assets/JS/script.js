@@ -1,7 +1,12 @@
-// global variables, what needs to be stored and referenced in multiple functions
-    // request URLs with specific variable names
-    // store API keys
-    // element selectors
+// request URLs
+var currentWeather = `https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}`;
+var geoCode = `http://api.openweathermap.org/geo/1.0/direct?q={city name}&limit={limit}&appid={API key}`;   
+// store API keys
+var apiKey = '6f32794f43e74f5523608b6bb0478735';
+// element selectors
+var searchBtn = document.getElementById('search-button');
+var cityName = document.getElementById('search-input').value;
+
 
 // functions
     // recent searches - check localStorage
@@ -12,10 +17,9 @@
         // update/call recent searches function
         // 
 
-    // function search(variable){
-        // take in input
+function searchValue(cityName){     
         // call function that saves recent searches
-    // }
+}
     // function coords(variable) {
         // fetch request for coords with API
         // .then - convert to JSON format
@@ -33,13 +37,13 @@
 // }
     
 
-// event listener for search button ("click", function(){
-// variable for search input
-// call function - search(variable)
-// })
+// searchBtn.addEventListener("click", function(){
+// // variable for search input
+// // call function - search(variable)
+// });
 
-// event listener for recent searches ("click", function(event){
-// console.log(event.target)
-// create variable for search term (text on button)
-// call search function
+// event.target.addEventListener("click", function(event){
+// // console.log(event.target)
+// // create variable for search term (text on button)
+// // call search function
 // })
