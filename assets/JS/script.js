@@ -8,17 +8,23 @@ function displayRecent() {
     recentSearchEl.innerHTML = ''
 
     recentSearches.forEach(function(searchItem){
-        var listEl = document.createElement('li');
+        var listEl = document.createElement('button');
+        listEl.setAttribute('class', 'col-4 w-100')
         listEl.textContent = searchItem;
         recentSearchEl.appendChild(listEl);
+
+        listEl.addEventListener('click', function(){
+            var cityName = listEl.textContent
+            searchCurrent(cityName);
+        })
+        
     })
 }
 
-function searchCurrent(cityName) {
-  var cityName = document.getElementById("search-input").value;
+function searchCurrent(searchInput = document.getElementById("search-input").value) {
   var geoCode =
     "https://api.openweathermap.org/geo/1.0/direct?q=" +
-    cityName +
+    searchInput +
     "&appid=6f32794f43e74f5523608b6bb0478735";
 
   fetch(geoCode)
@@ -28,16 +34,13 @@ function searchCurrent(cityName) {
     .then(function (data) {
 
       var recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
-      recentSearches.push(cityName);
+      recentSearches.push(searchInput);
       localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
 
       displayRecent()
 
-      console.log(data);
       var lat = data[0].lat;
       var lon = data[0].lon;
-      console.log(lat);
-      console.log(lon);
       getWeather(lat, lon);
       getForecast(lat, lon);
     });
@@ -52,10 +55,9 @@ function getWeather(lat, lon) {
     "&appid=6f32794f43e74f5523608b6bb0478735&units=imperial";
   return fetch(currentWeather)
     .then(function (response) {
-      return response.JSON();
+      return response.json();
     })
     .then(function (data) {
-      console.log(data);
       document.querySelector(".current-weather").innerHTML = "";
       var weatherCard = document.createElement("div");
       weatherCard.setAttribute("class", "card justify-content-start w-100");
@@ -131,9 +133,3 @@ displayRecent()
 searchBtn.addEventListener("click", function () {
   searchCurrent();
 });
-
-// event.target.addEventListener("click", function(event){
-// // console.log(event.target)
-// // create variable for search term (text on button)
-// // call search function
-// })
