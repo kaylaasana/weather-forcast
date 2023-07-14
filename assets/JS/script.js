@@ -1,6 +1,6 @@
 // element selectors
 var searchBtn = document.getElementById("search-button");
-
+// display recent searches
 function displayRecent() {
     var recentSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
     var recentSearchEl = document.getElementById('recent-searches')
@@ -19,8 +19,8 @@ function displayRecent() {
         })
         
     })
-}
-
+} 
+// function that makes calls to API for the city data
 function searchCurrent(searchInput = document.getElementById("search-input").value) {
   var geoCode =
     "https://api.openweathermap.org/geo/1.0/direct?q=" +
@@ -45,7 +45,7 @@ function searchCurrent(searchInput = document.getElementById("search-input").val
       getForecast(lat, lon);
     });
 }
-
+// function to call for the current weather using city data
 function getWeather(lat, lon) {
   var currentWeather =
     "https://api.openweathermap.org/data/2.5/weather?lat=" +
@@ -81,7 +81,7 @@ function getWeather(lat, lon) {
       document.querySelector(".current-weather").append(weatherCard);
     });
 }
-
+// function to call for 5 day forecast using city data
 function getForecast(lat, lon) {
   var currentWeather =
     "https://api.openweathermap.org/data/2.5/forecast?lat=" +
@@ -94,7 +94,6 @@ function getForecast(lat, lon) {
       return response.json();
     })
     .then(function (data) {
-      console.log(data);
       document.querySelector("#weather-forecast").innerHTML = "";
       for (var i = 4; i < data.list.length; i += 8) {
         console.log(data.list[i]);
@@ -129,7 +128,7 @@ function getForecast(lat, lon) {
 }
 
 displayRecent()
-
+// event listener for search button
 searchBtn.addEventListener("click", function () {
   searchCurrent();
 });
