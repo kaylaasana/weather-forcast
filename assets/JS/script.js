@@ -69,7 +69,7 @@ function getWeather(lat, lon) {
       var icon = document.createElement("img");
       icon.setAttribute(
         "src",
-        `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`
+        `https://openweathermap.org/img/wn/${data.weather[0].icon}.png`
       );
       icon.setAttribute("class", "current-icon");
       var wind = document.createElement("p");
