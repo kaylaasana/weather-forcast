@@ -52,7 +52,7 @@ function getWeather(lat, lon) {
         icon.setAttribute('src', `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
         icon.setAttribute('class', 'current-icon')
         var wind = document.createElement('p')
-        wind.textContent = 'Wind Speed: ' + data.wind.speed + ' MPH'
+        wind.textContent = 'Wind Speed: ' + data.wind.speed + ' mph'
         var humidity = document.createElement('p')
         humidity.textContent = 'Humidity: ' + data.main.humidity + ' %'
         var currentDate = dayjs().format('MMM-D')
@@ -80,8 +80,12 @@ function getForecast(lat, lon) {
             var icon = document.createElement('img')
             icon.setAttribute('src', `https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`)
             icon.setAttribute('class', 'current-icon')
-            var forecastDate = data.dt_txt
-            forecastCard.append(temp, icon)
+            var forecastDate = dayjs(data.list[i].dt_txt).format('MMM-D')
+            var forecastWind = document.createElement('p')
+            forecastWind.textContent = "Wind Speed: " + data.list[i].wind.speed + " mph"
+            var forecastHum = document.createElement('p')
+            forecastHum.textContent = "Humidity: " + data.list[i].main.humidity + " %"
+            forecastCard.append(forecastDate, temp, icon, forecastWind, forecastHum)
             document.getElementById('weather-forecast').append(forecastCard)
         }
     }); 
