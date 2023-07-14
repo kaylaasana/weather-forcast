@@ -102,7 +102,7 @@ function getForecast(lat, lon) {
         forecastCard.setAttribute("class", "card col");
         forecastCard.setAttribute("style", "width: 18rem");
         var temp = document.createElement("h5");
-        temp.textContent = Math.floor(data.list[i].main.temp) + " F";
+        temp.textContent = 'Temperature: ' + Math.floor(data.list[i].main.temp) + " F";
         var icon = document.createElement("img");
         icon.setAttribute(
           "src",
