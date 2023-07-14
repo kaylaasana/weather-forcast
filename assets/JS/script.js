@@ -27,35 +27,67 @@ function searchCurrent(cityName){
             var lat = data[0].lat;
             var lon = data[0].lon;
             console.log(lat);
-            console.log(lon);
-            var currentWeather = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=6f32794f43e74f5523608b6bb0478735";
-            return fetch(currentWeather);
-            })
-            .then(function(response){
-                return response.json();
-            })
-            .then(function(data){
-                console.log(data)
-            });
+            console.log(lon);  
+            getWeather(lat,lon) 
+            getForecast(lat,lon)         
+})}
+
+function getWeather(lat, lon) {
+    var currentWeather = "https://api.openweathermap.org/data/2.5/weather?lat=" + lat + "&lon=" + lon + "&appid=6f32794f43e74f5523608b6bb0478735&units=imperial";
+    return fetch(currentWeather)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        console.log(data)
+        document.querySelector('.current-weather').innerHTML = ''
+        var weatherCard = document.createElement('div')
+        weatherCard.setAttribute('class', 'card justify-content-start w-100')
+        weatherCard.setAttribute('style', 'width: 18rem')
+        var searchName = document.createElement('h3')
+        searchName.textContent = data.name 
+        var temp = document.createElement('h4')
+        temp.textContent = 'Temperature: ' + Math.floor(data.main.temp) + " F";
+        var icon = document.createElement('img')
+        icon.setAttribute('src', `https://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`);
+        icon.setAttribute('class', 'current-icon')
+        var wind = document.createElement('p')
+        wind.textContent = 'Wind Speed: ' + data.wind.speed + ' MPH'
+        var humidity = document.createElement('p')
+        humidity.textContent = 'Humidity: ' + data.main.humidity + ' %'
+        var currentDate = dayjs().format('MMM-D')
+        weatherCard.append(currentDate, searchName, temp, icon, wind, humidity);
+        document.querySelector('.current-weather').append(weatherCard);
+    });    
 }
-// function coords(lat, lon) {
-// // //         // fetch request for coords with API
-// // //         // .then - convert to JSON format
-// // //         // .then - receive and extract coord data
-// // //         var long;
-// // //         var lat;
-// // //         // call weather function
-// }
-    // function weather(coords) {
-        // use coords from first fetch to fetch weather data from API
-        // convert to JSON format
-        // extract temp, wind and humidity +5 day forecast from object data
-        // call display data function
-// }
-    // function display data(multiple variables, variable, variable, etc) {
-        // display data to page dependant on HTML
-// }
-    
+
+function getForecast(lat, lon) {
+    var currentWeather = "https://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=6f32794f43e74f5523608b6bb0478735&units=imperial";
+    return fetch(currentWeather)
+    .then(function(response){
+        return response.json();
+    })
+    .then(function(data){
+        console.log(data)
+        document.querySelector('#weather-forecast').innerHTML = ''
+        for(var i = 4; i < data.list.length; i+=8){
+            console.log(data.list[i])            
+            var forecastCard = document.createElement('div')
+            forecastCard.setAttribute('class', 'card col')
+            forecastCard.setAttribute('style', 'width: 18rem')
+            var temp = document.createElement('h5')
+            temp.textContent = Math.floor(data.list[i].main.temp) + " F";
+            var icon = document.createElement('img')
+            icon.setAttribute('src', `https://openweathermap.org/img/wn/${data.list[i].weather[0].icon}@2x.png`)
+            icon.setAttribute('class', 'current-icon')
+            var forecastDate = data.dt_txt
+            forecastCard.append(temp, icon)
+            document.getElementById('weather-forecast').append(forecastCard)
+        }
+    }); 
+       
+}
+   
 
 searchBtn.addEventListener("click", function(){
     searchCurrent();
