@@ -2,26 +2,29 @@
 var searchBtn = document.getElementById("search-button");
 // display recent searches
 function displayRecent() {
-    var recentSearches = JSON.parse(localStorage.getItem('recentSearches') || '[]');
-    var recentSearchEl = document.getElementById('recent-searches')
+  var recentSearches = JSON.parse(
+    localStorage.getItem("recentSearches") || "[]"
+  );
+  var recentSearchEl = document.getElementById("recent-searches");
 
-    recentSearchEl.innerHTML = ''
+  recentSearchEl.innerHTML = "";
 
-    recentSearches.forEach(function(searchItem){
-        var listEl = document.createElement('button');
-        listEl.setAttribute('class', 'col-4 w-100')
-        listEl.textContent = searchItem;
-        recentSearchEl.appendChild(listEl);
+  recentSearches.forEach(function (searchItem) {
+    var listEl = document.createElement("button");
+    listEl.setAttribute("class", "col-4 w-100");
+    listEl.textContent = searchItem;
+    recentSearchEl.appendChild(listEl);
 
-        listEl.addEventListener('click', function(){
-            var cityName = listEl.textContent
-            searchCurrent(cityName);
-        })
-        
-    })
-} 
+    listEl.addEventListener("click", function () {
+      var cityName = listEl.textContent;
+      searchCurrent(cityName);
+    });
+  });
+}
 // function that makes calls to API for the city data
-function searchCurrent(searchInput = document.getElementById("search-input").value) {
+function searchCurrent(
+  searchInput = document.getElementById("search-input").value
+) {
   var geoCode =
     "https://api.openweathermap.org/geo/1.0/direct?q=" +
     searchInput +
@@ -32,12 +35,12 @@ function searchCurrent(searchInput = document.getElementById("search-input").val
       return response.json();
     })
     .then(function (data) {
-
-      var recentSearches = JSON.parse(localStorage.getItem('recentSearches')) || [];
+      var recentSearches =
+        JSON.parse(localStorage.getItem("recentSearches")) || [];
       recentSearches.push(searchInput);
-      localStorage.setItem('recentSearches', JSON.stringify(recentSearches));
+      localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
 
-      displayRecent()
+      displayRecent();
 
       var lat = data[0].lat;
       var lon = data[0].lon;
@@ -101,7 +104,8 @@ function getForecast(lat, lon) {
         forecastCard.setAttribute("class", "card col");
         forecastCard.setAttribute("style", "width: 18rem");
         var temp = document.createElement("h5");
-        temp.textContent = 'Temperature: ' + Math.floor(data.list[i].main.temp) + " F";
+        temp.textContent =
+          "Temperature: " + Math.floor(data.list[i].main.temp) + " F";
         var icon = document.createElement("img");
         icon.setAttribute(
           "src",
@@ -127,7 +131,7 @@ function getForecast(lat, lon) {
     });
 }
 
-displayRecent()
+displayRecent();
 // event listener for search button
 searchBtn.addEventListener("click", function () {
   searchCurrent();
